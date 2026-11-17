@@ -44,17 +44,20 @@ public class Vehicle extends Asset {
         BigDecimal value = getOriginalCost();
         int age = Year.now().getValue() - year;
 
+        BigDecimal reduction = new BigDecimal("1.00");
+
         if (age <= 3) {
-            BigDecimal reduction = new BigDecimal("1.00").subtract(new BigDecimal("0.03").multiply(BigDecimal.valueOf(age)));
-            value = value.multiply(reduction);
+            reduction = new BigDecimal("0.97");
         } else if (age <= 6) {
-            BigDecimal reduction = new BigDecimal("1.00").subtract(new BigDecimal("0.06").multiply(BigDecimal.valueOf(age)));
-            value = value.multiply(reduction);
+            reduction = new BigDecimal("0.94");
         } else if (age <= 10) {
-            BigDecimal reduction = new BigDecimal("1.00").subtract(new BigDecimal("0.08").multiply(BigDecimal.valueOf(age)));
-            value = value.multiply(reduction);
+            reduction = new BigDecimal("0.92");
         } else {
             value = new BigDecimal("1000.00");
+        }
+
+        for (int i = 0; i < age; i++) {
+            value = value.multiply(reduction);
         }
 
         if (makeModel.equalsIgnoreCase("Honda") || makeModel.equalsIgnoreCase("Toyota")) {
